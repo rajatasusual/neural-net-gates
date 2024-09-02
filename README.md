@@ -1,15 +1,50 @@
-**neural-net-rs**
+# neural-net-gates
 
-**Purpose:**
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rajatasusual/neural-net-gates/blob/main/LICENSE)
 
-"neural-net-rs" is a Rust-based neural network framework designed for educational purposes. It aims to provide a clear and understandable implementation of basic neural network concepts using the Rust programming language.
+A Rust-based neural network implementation for learning and recognizing logic gates (AND, OR, XOR, NOT, NAND, NOR, XNOR).
 
-**Functionality:**
+**Author:** rajatasusual
 
-* **Matrix Operations:** The `matrix.rs` module implements a `Matrix` struct and essential matrix operations like addition, multiplication, and transposition. A custom `matrix!` macro simplifies matrix creation.
-* **Neural Network Structure:** The `network.rs` module defines the `Network` struct to represent a neural network, including layers, weights, biases, and an activation function.
-* **Activation Functions:** The `activation.rs` module provides the sigmoid activation function and its derivative.
-* **Training and Inference:** The `Network` struct implements `feed_forward` for forward propagation and `back_propagate` for training the network using backpropagation.
-* **Example:** The `main.rs` module demonstrates the framework's use by training a network on the XOR problem.
+## Overview
 
-**Overall, the project provides a foundational implementation of a neural network in Rust. Its focus on simplicity and clarity makes it a valuable educational tool for understanding the core principles behind neural networks.**
+This project demonstrates the fundamental concepts of neural networks in Rust by training a network to identify different logic gates based on their input-output patterns. The network architecture and training process are designed to be simple and understandable, making it an excellent educational resource for those new to neural networks.
+
+## Features
+
+* Implements a basic feedforward neural network with backpropagation for training.
+* Supports multiple logic gates: AND, OR, XOR, NOT, NAND, NOR, XNOR.
+* Uses the sigmoid activation function.
+* Provides a custom `matrix!` macro for convenient matrix creation.
+
+## Getting Started
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone [https://github.com/rajatasusual/neural-net-gates.git](https://github.com/rajatasusual/neural-net-gates.git)
+   ```
+
+2. **Navigate to the project directory:**
+
+   ```bash
+   cd neural-net-gates
+   ```
+
+3. **Build and run:**
+
+   ```bash
+   cargo run
+   ```
+
+## Usage
+
+The `main.rs` file demonstrates how to train and test the network on the logic gates. The network architecture and training parameters can be customized within the code.
+
+## Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests to improve the project.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

@@ -93,10 +93,7 @@ impl Network {
     }
 
     pub fn train(&mut self, inputs: Vec<Vec<f64>>, targets: Vec<Vec<f64>>, epochs: u32) {
-		for i in 1..=epochs {
-			if epochs < 100 || i % (epochs / 10) == 0 {
-				println!("Epoch {} of {}", i, epochs);
-			}
+		for _i in 1..=epochs {
 			for j in 0..inputs.len() {
 				let outputs = self.feed_forward(Matrix::from(inputs[j].clone()));
 				self.back_propogate(outputs,Matrix::from( targets[j].clone()));
