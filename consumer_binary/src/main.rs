@@ -1,122 +1,40 @@
 use neural_network::activations::SIGMOID;
-use neural_network::matrix::Matrix;
 use neural_network::network::Network;
-use std::collections::HashMap;
-use std::env;
+use neural_network::matrix::Matrix;
 
 fn main() {
-    env::set_var("RUST_BACKTRACE", "1");
-
-    // Inputs and targets for all logic gates
-    let all_inputs = vec![
-        vec![0.0, 0.0],
-        vec![0.0, 1.0],
-        vec![1.0, 0.0],
-        vec![1.0, 1.0],
+    // Define the input-output pairs for each logic gate
+    let logic_gates = vec![
+        ("AND", vec![vec![0.0, 0.0], vec![0.0, 1.0], vec![1.0, 0.0], vec![1.0, 1.0]], vec![vec![0.0], vec![0.0], vec![0.0], vec![1.0]]),
+        ("OR", vec![vec![0.0, 0.0], vec![0.0, 1.0], vec![1.0, 0.0], vec![1.0, 1.0]], vec![vec![0.0], vec![1.0], vec![1.0], vec![1.0]]),
+        ("XOR", vec![vec![0.0, 0.0], vec![0.0, 1.0], vec![1.0, 0.0], vec![1.0, 1.0]], vec![vec![0.0], vec![1.0], vec![1.0], vec![0.0]]),
+        ("NOT", vec![vec![0.0], vec![1.0]], vec![vec![1.0], vec![0.0]]),
+        ("NAND", vec![vec![0.0, 0.0], vec![0.0, 1.0], vec![1.0, 0.0], vec![1.0, 1.0]], vec![vec![1.0], vec![1.0], vec![1.0], vec![0.0]]),
+        ("NOR", vec![vec![0.0, 0.0], vec![0.0, 1.0], vec![1.0, 0.0], vec![1.0, 1.0]], vec![vec![1.0], vec![0.0], vec![0.0], vec![0.0]]),
+        ("XNOR", vec![vec![0.0, 0.0], vec![0.0, 1.0], vec![1.0, 0.0], vec![1.0, 1.0]], vec![vec![1.0], vec![0.0], vec![0.0], vec![1.0]]),
     ];
 
-    // 7-dimensional target vectors
-    let and_targets = vec![
-        vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        vec![1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-    ];
-    let or_targets = vec![
-        vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        vec![0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        vec![0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        vec![0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-    ];
-    let xor_targets = vec![
-        vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        vec![0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0],
-        vec![0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0],
-        vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-    ];
+    for (gate_name, inputs, targets) in logic_gates {
+        println!("Training network for {} gate...", gate_name);
 
-    let not_targets = vec![
-        vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        vec![0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0],
-    ];
+        let layers = if gate_name == "NOT" {
+            vec![1, 2, 1] // Adjust architecture for NOT gate
+        } else {
+            vec![2, 4, 1]
+        };
 
-    let nand_targets = vec![
-        vec![0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0],
-        vec![0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0],
-        vec![0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0],
-        vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-    ];
+        // Initialize the network with the desired architecture and sigmoid activation function
+        let mut network = Network::new(layers, SIGMOID, 0.5);
 
-    let nor_targets = vec![
-        vec![0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
-        vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-    ];
+        // Train the network for 10,000 epochs
+        network.train(inputs.clone(), targets.clone(), 100000);
 
-    let xnor_targets = vec![
-        vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0],
-        vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-        vec![0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0], // 1 for XNOR when both inputs are 1 or 0
-    ];
+        // Test the network with the input values
+        for input in &inputs {
+            let output = network.feed_forward(Matrix::from(input.clone()));
+            println!("Input: {:?} => Output: {:?}", input, output);
+        }
 
-    let mut network = Network::new(vec![2, 3, 7], SIGMOID, 0.5);
-
-    train_and_test(&mut network, all_inputs.clone(), and_targets, 100000, "AND");
-    train_and_test(&mut network, all_inputs.clone(), or_targets, 100000, "OR");
-    train_and_test(&mut network, all_inputs.clone(), xor_targets, 100000, "XOR");
-    train_and_test(
-        &mut network,
-        all_inputs[0..2].to_vec(),
-        not_targets,
-        100000,
-        "NOT",
-    );
-    train_and_test(
-        &mut network,
-        all_inputs.clone(),
-        nand_targets,
-        100000,
-        "NAND",
-    );
-    train_and_test(&mut network, all_inputs.clone(), nor_targets, 100000, "NOR");
-    train_and_test(
-        &mut network,
-        all_inputs.clone(),
-        xnor_targets,
-        100000,
-        "XNOR",
-    );
-}
-
-fn train_and_test(
-    network: &mut Network,
-    all_inputs: Vec<Vec<f64>>,
-    targets: Vec<Vec<f64>>,
-    epochs: u32,
-    gate: &str,
-) {
-    print!("Training {}...\n", gate);
-
-    network.train(all_inputs.clone(), targets, epochs);
-
-    // Map gate names to their corresponding output neuron index
-    let gate_map = HashMap::from([
-        ("AND", 0),
-        ("OR", 1),
-        ("XOR", 2),
-        ("NOT", 3),
-        ("NAND", 4),
-        ("NOR", 5),
-        ("XNOR", 6),
-    ]);
-
-    // Test on all inputs for the specified gate
-    for input in &all_inputs {
-        let output = network.feed_forward(Matrix::from(input.clone()));
-        let gate_index = gate_map.get(gate).expect("Invalid gate name");
-        let result = output.data[*gate_index];
-        println!("Input: {:?}, Gate: {}, Output: {}", input, gate, result);
+        println!("Finished training for {} gate.\n", gate_name);
     }
 }
