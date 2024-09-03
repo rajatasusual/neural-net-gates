@@ -63,27 +63,9 @@ fn main() {
 
     let mut network = Network::new(vec![2, 3, 7], SIGMOID, 0.5);
 
-    train_and_test(
-        &mut network,
-        all_inputs.clone(),
-        and_targets,
-        100000,
-        "AND",
-    );
-    train_and_test(
-        &mut network,
-        all_inputs.clone(),
-        or_targets,
-        100000,
-        "OR",
-    );
-    train_and_test(
-        &mut network,
-        all_inputs.clone(),
-        xor_targets,
-        100000,
-        "XOR",
-    );
+    train_and_test(&mut network, all_inputs.clone(), and_targets, 100000, "AND");
+    train_and_test(&mut network, all_inputs.clone(), or_targets, 100000, "OR");
+    train_and_test(&mut network, all_inputs.clone(), xor_targets, 100000, "XOR");
     train_and_test(
         &mut network,
         all_inputs[0..2].to_vec(),
@@ -98,13 +80,7 @@ fn main() {
         100000,
         "NAND",
     );
-    train_and_test(
-        &mut network,
-        all_inputs.clone(),
-        nor_targets,
-        100000,
-        "NOR",
-    );
+    train_and_test(&mut network, all_inputs.clone(), nor_targets, 100000, "NOR");
     train_and_test(
         &mut network,
         all_inputs.clone(),

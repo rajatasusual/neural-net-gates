@@ -38,17 +38,8 @@ mod tests {
             7.0, 8.0, 9.0
         ];
 
-    
-
         assert_eq!(m.rows, 3);
         assert_eq!(m.cols, 3);
-        assert_eq!(
-            m.data,
-            vec![
-                1.0, 2.0, 3.0,
-                4.0, 5.0, 6.0,
-                7.0, 8.0, 9.0,
-            ]
-        );
+        assert_eq!(m.data, vec![1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0,]);
     }
 }
