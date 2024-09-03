@@ -1,50 +1,71 @@
-# neural-net-gates
+
+# Neural Network for Logic Gates
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/rajatasusual/neural-net-gates/blob/main/LICENSE)
 
-A Rust-based neural network implementation for learning and recognizing logic gates (AND, OR, XOR, NOT, NAND, NOR, XNOR).
 
-**Author:** rajatasusual
+This project implements a neural network from scratch in Rust to train and test on seven basic logic gates: AND, OR, XOR, NOT, NAND, NOR, and XNOR.
 
-## Overview
+## Project Structure
 
-This project demonstrates the fundamental concepts of neural networks in Rust by training a network to identify different logic gates based on their input-output patterns. The network architecture and training process are designed to be simple and understandable, making it an excellent educational resource for those new to neural networks.
+- `matrix.rs`: Contains the implementation of matrix operations, including addition, subtraction, multiplication, and transposition.
+- `activations.rs`: Defines activation functions and their derivatives. Currently, only the sigmoid function is implemented.
+- `network.rs`: Implements the neural network structure, including forward propagation, backpropagation, and training.
+- `main.rs`: Initializes and trains the neural network on the logic gates data, then tests and prints the results.
 
-## Features
+## Dependencies
 
-* Implements a basic feedforward neural network with backpropagation for training.
-* Supports multiple logic gates: AND, OR, XOR, NOT, NAND, NOR, XNOR.
-* Uses the sigmoid activation function.
-* Provides a custom `matrix!` macro for convenient matrix creation.
+The project uses the following crates:
 
-## Getting Started
+- `rand`: For generating random numbers in matrix initialization.
 
-1. **Clone the repository:**
+Make sure to add this to your `Cargo.toml`:
 
-   ```bash
-   git clone [https://github.com/rajatasusual/neural-net-gates.git](https://github.com/rajatasusual/neural-net-gates.git)
-   ```
-
-2. **Navigate to the project directory:**
-
-   ```bash
-   cd neural-net-gates
-   ```
-
-3. **Build and run:**
-
-   ```bash
-   cargo run
-   ```
+```toml
+[dependencies]
+rand = "0.8"
+```
 
 ## Usage
 
-The `main.rs` file demonstrates how to train and test the network on the logic gates. The network architecture and training parameters can be customized within the code.
+To run the project:
+
+1. Clone the repository:
+
+    ```sh
+    git clone https://github.com/rajatasusual/neural-net-gates.git
+    ```
+
+2. Navigate to the project directory:
+
+    ```sh
+    cd neural-net-gates
+    ```
+
+3. Build and run the project:
+
+    ```sh
+    cargo run
+    ```
+
+## Training Details
+
+- **Logic Gates**: AND, OR, XOR, NOT, NAND, NOR, XNOR
+- **Epochs**: 100,000 for each gate
+- **Learning Rate**: 0.5
+- **Activation Function**: Sigmoid function
+
+## Code Explanation
+
+- **Matrix Operations**: `matrix.rs` handles basic matrix operations essential for neural network computations.
+- **Activation Functions**: `activations.rs` defines the sigmoid function and its derivative.
+- **Neural Network**: `network.rs` manages the architecture, forward propagation, backpropagation, and training.
+- **Main Program**: `main.rs` sets up the network, trains it on the logic gates, and prints the results.
 
 ## Contributing
 
-Contributions are welcome! Feel free to open issues or submit pull requests to improve the project.
+If you want to contribute to the project, please fork the repository and submit a pull request. Any improvements or suggestions are welcome!
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.

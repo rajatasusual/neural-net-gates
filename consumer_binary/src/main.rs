@@ -1,9 +1,10 @@
-use neural_network::activations::SIGMOID;  // You can add other activations here
+use neural_network::activations::SIGMOID;
 use neural_network::network::Network;
 use neural_network::matrix::Matrix;
 use rand::seq::SliceRandom;
 use std::fs::File;
 use std::io::{Write, Read};
+use std::f64;
 
 fn main() {
     // Define the input-output pairs for each logic gate
@@ -59,15 +60,45 @@ fn main() {
 
             // Calculate loss on validation set
             let mut val_loss = 0.0;
-            for j in 0..val_inputs.len() {
-                let output = network.feed_forward(Matrix::from(val_inputs[j].clone()));
-                let loss = val_targets[j].iter()
+            let mut count = 0;
+
+            for (input, target) in val_inputs.iter().zip(val_targets.iter()) {
+                let output = network.feed_forward(Matrix::from(input.clone()));
+
+                if output.data.len() != target.len() {
+                    println!("Mismatch in output and target sizes.");
+                    continue;
+                }
+
+                let loss: f64 = target.iter()
                     .zip(output.data.iter())
-                    .map(|(t, o)| (t - o).powi(2))
-                    .sum::<f64>();
+                    .map(|(t, o)| {
+                        if o.is_nan() || t.is_nan() {
+                            println!("Encountered NaN value in output or target.");
+                            return 0.0;
+                        }
+                        let diff = t - o;
+                        if diff.is_nan() {
+                            println!("NaN detected in loss calculation.");
+                        }
+                        diff * diff
+                    })
+                    .sum();
+                
+                if loss.is_nan() {
+                    println!("NaN detected in loss calculation.");
+                    continue;
+                }
+
                 val_loss += loss;
+                count += 1;
             }
-            val_loss /= val_inputs.len() as f64;
+
+            if count > 0 {
+                val_loss /= count as f64;
+            } else {
+                val_loss = f64::INFINITY;
+            }
 
             if val_loss < best_loss {
                 best_loss = val_loss;
